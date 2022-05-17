@@ -27,11 +27,11 @@ import org.bson.conversions.Bson;
 //mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 public class MongoDB {
 	 MongoCollection<Document> CrawlerCollection;
-	
+	 private MongoCollection<Document> IndexerCollection;
 	public MongoDB(String DBname) {
 		
 		try {
-			String uri ="mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/webCrawlerDB?retryWrites=true&w=majority";
+			String uri = "mongodb://localhost1:27017";
 			ConnectionString connectionString = new ConnectionString(uri);
 			
 			MongoClientSettings settings = MongoClientSettings.builder()
@@ -146,5 +146,8 @@ public  ArrayList<String> getURL(String url) {
 		//System.out.println(database.getNotCrawled());
 
 	}
+	/////////////////////////////////////////////////////////////////
+	////////////////////////     INDEXER     ////////////////////////
+	/////////////////////////////////////////////////////////////////
 
 }

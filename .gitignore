@@ -1,4 +1,7 @@
 .idea/
 lib/
+out/
+test_assets/
+src/indexer/Test.java
 *.iml
 *.class
