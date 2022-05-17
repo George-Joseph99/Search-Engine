@@ -25,12 +25,10 @@ public class Main {
         ArrayList<String> isVisited = database.getCrawled();
         ArrayList<String> toVisit = database.getNotCrawled();
         System.out.println("initially to visit size before seed: "+toVisit.size());
-
-        for (String url : seeds) 
-        {
-        	if (!toVisit.contains(url) && !isVisited.contains(url)) {
+        
+        if (toVisit.isEmpty()) {
+        	for (String url : seeds) 
         		toVisit.add(url);
-        	}
         }
         //TODO if tovisit empty add seeds
         System.out.println("initially to visit size: "+toVisit.size());
@@ -46,6 +44,8 @@ public class Main {
         for(int i = 0; i < NO_threads; i++) t[i].start();
         for(int i = 0; i < NO_threads; i++) t[i].join();
         
+        crawler.saveUrlsToFile("test.txt");
+
         System.out.println("finally to visit size: "+crawler.getNumberofPagesToVisit());
         System.out.println("finally visited size: "+crawler.getNumberofVisitedPages());
 	}
