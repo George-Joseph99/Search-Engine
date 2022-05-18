@@ -1,0 +1,176 @@
+//colors
+$button: white;
+
+.home-body {
+  display: flex;
+  font-size: 52px;
+  align-items: center;
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  justify-content: center;
+  background-color: #48d4ff;
+  // background-image: url("./../galaxy1.jpg");
+  // background-size: cover;
+  /*color: transparent;*/
+}
+
+#home-logo {
+  min-width: 50vw;
+  padding: 0;
+}
+@media (max-width: 900px) {
+  #home-logo {
+    height: 200px !important;
+    width: 500px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #home-logo {
+    height: 170px !important;
+    width: 400px !important;
+  }
+}
+@media (max-width: 500px) {
+  #home-logo {
+    height: 120px !important;
+    width: 300px !important;
+  }
+}
+@media (max-width: 600px) {
+  .search-button {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 30px !important;
+  }
+  #home-input {
+    height: 57px !important;
+  }
+}
+@media (max-width: 300px) {
+  .search-button {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  #home-logo {
+    height: 85px !important;
+    width: 200px !important;
+  }
+
+  // .search-button {
+  //   width: 60px !important;
+  //   height: 60px !important;
+  //   font-size: 30px !important;
+  // }
+
+  // #home-input {
+  //   height: 30px !important;
+  //   font-size: 10px;
+  //   margin-left: -30px !important;
+  //   padding-left: 30px !important;
+  // }
+  // #voice {
+  //   font-size: 15px !important;
+  // }
+}
+.search-section {
+  text-align: center;
+  width: 70%;
+  height: 60%;
+  color: aliceblue !important;
+
+  h1 {
+    font-size: 60px;
+    margin-top: 100px;
+    margin-bottom: 10px;
+    font-weight: 900;
+  }
+
+  h6 {
+    margin-bottom: 40px;
+    color: rgb(173, 189, 202);
+  }
+
+  div {
+    #home-input {
+      margin-left: -45px;
+      margin-right: -10px;
+      display: block;
+      background-color: transparent !important;
+      width: 50%;
+      min-width: 250px;
+      height: 50px;
+      border-top-left-radius: 25px;
+      border-bottom-left-radius: 25px;
+      padding-left: 50px;
+      border-color: aliceblue;
+      border-width: 3px;
+      overflow: hidden;
+      color: aliceblue !important;
+      transition: background-color 0.5s;
+      transition: box-shadow 0.3s;
+      text-overflow: clip;
+    }
+    #home-input:focus {
+      box-shadow: 0 0 1px #fff, 0 0 10px #fff;
+      transition: box-shadow 0.3s;
+    }
+    #home-input::placeholder {
+      color: white;
+    }
+
+    .search-button {
+      color: #f03a73;
+      background-color: $button;
+      height: 70px;
+      width: 70px;
+      padding: 10px;
+      border-radius: 25px;
+      font-size: 40px;
+      line-height: 1.2;
+      outline: none;
+      border-color: $button;
+      transition: all 0.3s linear;
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff;
+      z-index: 1;
+    }
+
+    .search-button:hover {
+      transition: all 250ms linear;
+      box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+    }
+
+    #voice {
+      z-index: 1;
+      background-color: transparent !important;
+      border: none;
+      color: aliceblue;
+      font-size: 30px;
+      transition: all 0.3s linear;
+    }
+
+    #voice:hover {
+      text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+    }
+
+    .glow {
+      transition: all 0.3s linear !important;
+      animation: pulsate 1.2s infinite alternate;
+    }
+  }
+}
+
+//idea from https://css-tricks.com/how-to-create-neon-text-with-css/
+@keyframes pulsate {
+  0% {
+    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta, 0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
+  }
+  100% {
+    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+  }
+}
