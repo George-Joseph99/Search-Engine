@@ -1,6 +1,6 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-Jar/
 .idea/
 out/
+apache-tomcat-10.0.21/

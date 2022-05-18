@@ -9,5 +9,15 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jsoup-1.14.3.jar" level="project" />
     <orderEntry type="library" name="mongo-java-driver-3.12.11.jar" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/Server/apache-tomcat-9.0.63/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/Server/apache-tomcat-9.0.63/lib" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
