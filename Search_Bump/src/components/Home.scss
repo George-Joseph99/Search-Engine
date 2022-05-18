@@ -10,9 +10,8 @@ $button: white;
   width: 100%;
   justify-content: center;
   background-color: #48d4ff;
-  // background-image: url("./../galaxy1.jpg");
-  // background-size: cover;
-  /*color: transparent;*/
+  overflow: auto; 
+  background-size: cover;
 }
 
 #home-logo {

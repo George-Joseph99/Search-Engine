@@ -2,7 +2,7 @@ $highlighted: #9295f3;
 $hover: #686efa;
 
 .info {
-  background-color: #1f2940 !important;
+  //background-color: #1f2940 !important;
   /*background: rgba(255, 255, 255, 0.1) !important;*/
   padding-bottom: 10px;
   padding-top: 10px;
@@ -22,7 +22,7 @@ $hover: #686efa;
 .Title {
   font-size: 20px;
   font-weight: 600;
-  color: $highlighted;
+  color: rgb(240, 58, 115);
   text-decoration: none;
   transition: color 0.15s;
   display: -webkit-box;
@@ -39,7 +39,7 @@ $hover: #686efa;
 }
 .url {
   font-size: 15px;
-  color: rgb(187, 195, 201);
+  color: rgb(121, 119, 121);
   text-decoration: none;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -48,7 +48,7 @@ $hover: #686efa;
   overflow: hidden;
 }
 .url:hover {
-  color: rgb(187, 195, 201);
+  color: rgb(1, 40, 70);
 }
 
 .preview {

@@ -10,10 +10,12 @@ import { getSearchResults } from "../API/search";
 import LoadingGIF from "./LoadingGIF";
 import Suggestions from "./Suggestions";
 import useOuterClick from "../helpers/useOuterClick";
+import {results} from "../helpers/tempInitialStateResults.js"
 
 const Results = () => {
   let history = useHistory();
-  const [results, setResults] = useState([]);
+  //const [results, setResults] = useState([]);
+
   const [loadingResults, setLoadingResults] = useState(false);
   const [queryString, setQueryString] = useState("");
   const [suggestions, setSuggestions] = useState(getSearchHistory());
@@ -71,7 +73,7 @@ const Results = () => {
       .then((resultsFromSearch) => {
         console.log(resultsFromSearch);
         // saveSearchState(theCurrentQueryString, resultsFromSearch);
-        setResults(resultsFromSearch.results);
+        //setResults(resultsFromSearch.results);
         setTotalResultsFound(resultsFromSearch.totalResultsFound);
       })
       .catch(console.log)
@@ -175,7 +177,8 @@ const Results = () => {
     setSearchFocused(showSuggestionsAfterDeletion && true);
   }, [showSuggestionsAfterDeletion]);
 
-  var noResults = totalResultsFound === 0;
+  //var noResults = totalResultsFound === 0;
+  var noResults = false;
   return (
     <div className="results-body">
       <div className="result-header navbar fixed-top">
@@ -227,7 +230,7 @@ const Results = () => {
           ) : (
             <div className="result-block">
               {results.map((result, index) => (
-                <SearchResult className="search-result" siteName={result.website} pageTitle={result.title} URL={result.url} preview={result.snippet} key={index}></SearchResult>
+                <SearchResult className="search-result" siteName={result.siteName} pageTitle={result.pageTitle} URL={result.URL} preview={result.preview} key={index}></SearchResult>
               ))}
             </div>
           )}

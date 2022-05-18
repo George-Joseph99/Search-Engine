@@ -1,4 +1,4 @@
-export default [
+export const results = [
   {
     siteName: "Wikipedia",
     pageTitle: "State of Palestine",
@@ -832,4 +832,5 @@ export default [
   //     preview:
   //       "Israel and Occupied Palestinian Territories 2020. Israel continued to impose institutionalized discrimination against Palestinians living under its rule in Israel and. Lorem ipsum dolor sit amet, ubique atomorum his cu. Eu est error vitae ignota. Dicit inermis nostrum mei id, has at rationibus adversarium consequuntur. Inimicus sadipscing deterruisset ea nec, sit eu perfecto salutatus, sea persius expetenda an. His dolorem aliquando ex, tollit deleniti cotidieque no per. Ne eos laboramus honestatis, eos te elit facilisi.",
   //   },
-];
+]
+export default{results};
