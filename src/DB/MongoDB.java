@@ -27,7 +27,7 @@ import org.bson.conversions.Bson;
 //mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 public class MongoDB {
 	 MongoCollection<Document> CrawlerCollection;
-	
+
 	public MongoDB(String DBname) {
 		
 		try {
@@ -66,7 +66,7 @@ public class MongoDB {
 	}
 	public void InsertUrl(String url) {
 		try {
-	           this.CrawlerCollection.insertOne(new Document()
+	            this.CrawlerCollection.insertOne(new Document()
 	                    .append("_id", new ObjectId())
 	                    .append("url", url)
 	                    .append("crawled", "false")
@@ -114,6 +114,17 @@ public  ArrayList<String> getURL(String url) {
     }
     return matchedUrls;
 }
+public  ArrayList<String> getUrlId(String url) {
+	FindIterable <Document> iterable = this.CrawlerCollection.find(new org.bson.Document("url", url))
+			.projection(Projections.include("url"));
+    List <Document> results = new ArrayList<>();
+    iterable.into(results);
+    ArrayList<String> matchedUrls = new ArrayList<>();
+    for (int i=0 ; i<results.size(); i++) {
+    	matchedUrls.add(results.get(i).get("_id").toString());
+    }
+    return matchedUrls;
+}
 	public  ArrayList<String> getCrawled() {
 			FindIterable <Document> iterable = this.CrawlerCollection.find(new org.bson.Document("crawled", "true"))
 					.projection(Projections.include("url"));
@@ -136,14 +147,24 @@ public  ArrayList<String> getURL(String url) {
         }
         return crawledUrls;
     }
+	public  void removeURL(String url) {
+		try {
+		this.CrawlerCollection.deleteMany(new org.bson.Document("url", url));
+		}catch(MongoException me) {
+            System.err.println("Unable to update due to an error: " +me);
+        }
+				
+        
+    }
 
 	public static void main(String[] args)  {
 		MongoDB database = new MongoDB("webCrawlerDB");
 		
 		//database.InsertUrl("url", "html");
 		//database.setCrawled("https://en.wikipedia.org/wiki/Main_Page");
+		//database.removeURL("https://edition.cnn.com//");
 		//System.out.println(database.getCrawled().get(0));
-		//System.out.println(database.getNotCrawled());
+		//System.out.println(database.getUrlId("https://www.geeksforgeeks.org/"));
 
 	}
 
