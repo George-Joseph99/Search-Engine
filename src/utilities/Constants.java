@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 public class Constants {
     private static boolean is_initialized = false;
+
+    public static final String DATABASE_NAME = "webCrawlerDB";
     public static HashMap<String, Integer> indexerWeight = new HashMap<String, Integer>();
     public static void initialize() {
         if (is_initialized) return;

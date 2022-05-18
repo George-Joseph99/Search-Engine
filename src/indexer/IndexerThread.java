@@ -1,6 +1,6 @@
 package indexer;
 
-import DB.DBMan;
+import DB.MongoDB;
 import com.mongodb.client.FindIterable;
 import org.jsoup.Jsoup;
 import utilities.Constants;
@@ -10,11 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class IndexerThread implements Runnable{
+    MongoDB dbManager;
     private int start_index;
     private int end_index;
     private List<String> urls;
 
-    public IndexerThread(int s, int e, List<String> u) {
+    public IndexerThread(MongoDB dbman, int s, int e, List<String> u) {
+        dbManager = dbman;
         start_index = s;
         end_index = e;
         urls = u;
@@ -25,7 +27,7 @@ public class IndexerThread implements Runnable{
             HashMap<String, Pairing> documentMap = new HashMap<String, Pairing>();
 
             /* get HTML Document */
-            FindIterable<org.bson.Document> iterable = DBMan.getOneNotIndexedLink(url);
+            FindIterable<org.bson.Document> iterable = dbManager.getOneNotIndexedLink(url);
             org.jsoup.nodes.Document doc = Jsoup.parse(
                     iterable.first().getOrDefault("html", "").toString());
 
@@ -70,17 +72,20 @@ public class IndexerThread implements Runnable{
                 }
                 documentMap.put(word, pairingValue);
             }
-            words.clear();
 
             /* send to database */
-            DBMan.updateIndexerCollection(url, title, documentMap, totalWordCount);
+            dbManager.updateIndexerCollection(url, title, doc.body().text(),
+                    documentMap, totalWordCount);
+
+            //words.clear();
+            //documentMap.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     @Override
     public void run() {
-        if (end_index != -1) {
+        if (end_index != -1 && urls.size() > 0) {
             for (int i = start_index; i <= end_index; i++) {
                 indexerRun(urls.get(i));
             }

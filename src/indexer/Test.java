@@ -1,20 +1,22 @@
 package indexer;
-import DB.DBMan;
-import utilities.Constants;
-import utilities.WordHelper;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Test {
-    public static void main(String [] args) throws IOException {
+    public static void main(String [] args) throws IOException, InterruptedException {
+
+        //DBMan.startConnection("test");
+        //Indexer index = new Indexer();
+        //index.runIndexer();
+        //Thread indexerThread = new Thread(new Indexer());
+        //indexerThread.start();
+        //indexerThread.join();
+        //DBMan.endConnection();
+
+
 
         //List <Integer> list = calculateLinkNumber(8, 1027);
         //System.out.println();
@@ -24,10 +26,11 @@ public class Test {
         */
 
 
-        DBMan.startConnection("test");
+        //DBMan.startConnection("test");
         //DBMan.test_crawler_insert(link, doc.html(), "true", "false");
-        DBMan.test_indexer_insert();
-        DBMan.endConnection();
+        //DBMan.test_indexer_insert();
+        //DBMan.test_delete();
+        //DBMan.endConnection();
 
         /*
         List<String> words = new ArrayList<>();
@@ -61,7 +64,16 @@ public class Test {
         stringList.add("https://en.wikipedia.org/wiki/Wikipedia:Contents/Natural_and_physical_sciences");
         stringList.add("https://en.wikipedia.org/wiki/Portal:Science");
         stringList.add("https://en.wikipedia.org/wiki/Science");
+
+        //String link = "https://en.wikipedia.org/wiki/Science";
+        org.jsoup.nodes.Document doc = Jsoup.connect(stringList.get(0)).get();
+        DBMan.startConnection("test");
+        DBMan.test_crawler_insert(stringList.get(0), doc.html(), "true", "false");
+        //DBMan.test_unknown();
+        DBMan.endConnection();
+
         */
+
         /*
         for (String link: stringList) {
             org.jsoup.nodes.Document doc = Jsoup.connect(link).get();
@@ -69,14 +81,8 @@ public class Test {
         }
         */
 
-        /*
-        String link = "https://en.wikipedia.org/wiki/Science";
-        org.jsoup.nodes.Document doc = Jsoup.connect(link).get();
-        DBMan.startConnection("test");
-        //DBMan.test_crawler_insert(link, doc.html(), "true", "false");
-        DBMan.test_unknown();
-        DBMan.endConnection();
-        */
+
+
 
         /*
          */

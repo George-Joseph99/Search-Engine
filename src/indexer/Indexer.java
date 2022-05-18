@@ -1,22 +1,29 @@
 package indexer;
 
-import DB.DBMan;
-import com.mongodb.client.FindIterable;
+import DB.MongoDB;
+import utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.ceil;
+public class Indexer{
+    private final int THREAD_NUMBER = 4;
+    MongoDB dbManager;
+    public List<String> urls;
+    private List<Thread> threads = new ArrayList<Thread>();
+    public Indexer(MongoDB dbman) {
+        if (dbman == null) {
+            dbManager = new MongoDB(Constants.DATABASE_NAME);
+        } else {
+            dbManager = dbman;
+        }
+        List<String> urls = dbManager.getNonIndexedURLS();
+    }
+    public void runIndexer() {
 
-public class Indexer {
-    private static final int THREAD_NUMBER = 10;
-    public static List<String> urls = DBMan.getNotIndexedURLS();
-    private static List<Thread> threads = new ArrayList<Thread>();
-
-    public static void runIndexer() {
-        int LINKS_PER_THREAD = Double.valueOf(Math.ceil((double) urls.size()
-                / (double) THREAD_NUMBER)).intValue();
-        List<Integer> threadSegments = calculateLinkSegments(THREAD_NUMBER, urls.size());
+        int LINKS_PER_THREAD = Double.valueOf(Math.ceil((double) this.urls.size()
+                / (double) this.THREAD_NUMBER)).intValue();
+        List<Integer> threadSegments = calculateLinkSegments(this.THREAD_NUMBER, this.urls.size());
 
         int start_index = 0;
         int end_index = 0;
@@ -33,9 +40,10 @@ public class Indexer {
             //do threads
             Thread thread;
             if (threadSegments.get(i) > 0)
-                 thread = new Thread(new IndexerThread(start_index, end_index, urls));
+                 thread = new Thread(new IndexerThread(dbManager,
+                         start_index, end_index, urls));
             else
-                thread = new Thread(new IndexerThread(-1, -1, urls));
+                thread = new Thread(new IndexerThread(dbManager, -1, -1, urls));
             thread.start();
             threads.add(thread);
         }
@@ -48,6 +56,8 @@ public class Indexer {
             }
         }
 
+        //urls.clear();
+        //threads.clear();
     }
 
     private static List<Integer> calculateLinkSegments (int thread_number, int total_number) {
@@ -73,4 +83,14 @@ public class Indexer {
         }
         return list;
     }
+
+    /*
+    public void run() {
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     */
 }
