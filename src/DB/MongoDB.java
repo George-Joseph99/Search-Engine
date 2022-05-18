@@ -251,7 +251,7 @@ public class MongoDB {
 	}
 
 	public FindIterable<org.bson.Document> getOneNotIndexedLink(String link) {
-		return this.indexerCollection.find(new org.bson.Document("url", link));
+		return this.CrawlerCollection.find(Filters.eq("url",link));
 	}
 
 	public void updateIndexerCollection(String url, String title, String body,
@@ -296,11 +296,31 @@ public class MongoDB {
 	}
 
 	public void removeFromIndexerCollection(String url) {
-		this.indexerCollection.updateMany(new org.bson.Document(),
-				Updates.pull("documents", new org.bson.Document("url", url)));
+		this.indexerCollection.updateMany(
+				new org.bson.Document(),
+				Updates.pull("documents", new org.bson.Document("url", url)
+				)
+		);
 
 		this.indexerCollection.deleteMany(Filters.size("documents", 0));
 	}
+
+	///// FOR TESTING PURPOSES /////
+	public void resetCrawlerIndexed() {
+		this.CrawlerCollection.updateMany(
+				new org.bson.Document(),
+				Updates.set("indexed", "false")
+		);
+	}
+
+	public void dropIndexCollections() {
+		this.indexerCollection.drop();
+		this.documentCollection.drop();
+	}
+
+	/////////////////////////////////////////////////////////////////
+	////////////////////////      RANKER     ////////////////////////
+	/////////////////////////////////////////////////////////////////
 
 	public AggregateIterable<Document> getMatchedDocuments (String word) {
 		org.bson.conversions.Bson arg11 = match(Filters.eq("_id", word));

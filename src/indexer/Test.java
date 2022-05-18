@@ -1,5 +1,8 @@
 package indexer;
 
+import DB.MongoDB;
+import utilities.Constants;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +10,11 @@ import java.util.List;
 
 public class Test {
     public static void main(String [] args) throws IOException, InterruptedException {
+
+        MongoDB dbManger = new MongoDB(Constants.DATABASE_NAME);
+        Indexer indexer = new Indexer(dbManger);
+        indexer.runIndexer();
+
 
         //DBMan.startConnection("test");
         //Indexer index = new Indexer();

@@ -17,13 +17,15 @@ public class Indexer{
         } else {
             dbManager = dbman;
         }
-        List<String> urls = dbManager.getNonIndexedURLS();
+        urls = dbManager.getNonIndexedURLS();
     }
     public void runIndexer() {
 
         int LINKS_PER_THREAD = Double.valueOf(Math.ceil((double) this.urls.size()
                 / (double) this.THREAD_NUMBER)).intValue();
         List<Integer> threadSegments = calculateLinkSegments(this.THREAD_NUMBER, this.urls.size());
+        //IndexerThread it = new IndexerThread(dbManager, 0, 4, urls);
+        //it.run();
 
         int start_index = 0;
         int end_index = 0;
@@ -55,6 +57,7 @@ public class Indexer{
                 e.printStackTrace();
             }
         }
+
 
         //urls.clear();
         //threads.clear();

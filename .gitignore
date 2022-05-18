@@ -5,3 +5,4 @@ test_assets/
 src/indexer/Test.java
 *.iml
 *.class
+test.txt
