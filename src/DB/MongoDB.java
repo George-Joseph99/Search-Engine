@@ -25,7 +25,6 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Aggregates.project;
 
 //"mongodb://localhost1:27017"
 //mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
@@ -215,7 +214,6 @@ public class MongoDB {
 		}
 
 	}
-
 	public static void main(String[] args)  {
 		MongoDB database = new MongoDB("webCrawlerDB");
 
@@ -257,7 +255,7 @@ public class MongoDB {
 	}
 
 	public void updateIndexerCollection(String url, String title, String body,
-											   HashMap<String, Pairing> documentMap, int totalWordCount) {
+										HashMap<String, Pairing> documentMap, int totalWordCount) {
 		/* remove old Document from indexer collection */
 		this.removeFromIndexerCollection(url);
 
@@ -336,6 +334,5 @@ public class MongoDB {
 		org.bson.conversions.Bson query = Filters.eq("indexed", "true");
 		return (int) this.CrawlerCollection.countDocuments(query);
 	}
-
 
 }
