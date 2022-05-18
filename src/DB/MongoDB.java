@@ -27,11 +27,11 @@ import org.bson.conversions.Bson;
 //mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 public class MongoDB {
 	 MongoCollection<Document> CrawlerCollection;
-
+	 MongoCollection<Document> relationshipsCollection;
 	public MongoDB(String DBname) {
 		
 		try {
-			String uri ="mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/webCrawlerDB?retryWrites=true&w=majority";
+			String uri ="mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 			ConnectionString connectionString = new ConnectionString(uri);
 			
 			MongoClientSettings settings = MongoClientSettings.builder()
@@ -41,6 +41,7 @@ public class MongoDB {
             MongoClient mongoClient = MongoClients.create(settings);
             MongoDatabase database = mongoClient.getDatabase(DBname);
             CrawlerCollection = database.getCollection("CrawlerCollection");
+            relationshipsCollection = database.getCollection("relationshipsCollection");
             System.out.println("Connected to DB");
 
 			
@@ -52,11 +53,14 @@ public class MongoDB {
 	}
 	public void InsertUrl(String url ,String html) {
 		try {
+			//ArrayList<String> pageLinks = new ArrayList<>();
 	           this.CrawlerCollection.insertOne(new Document()
 	                    .append("_id", new ObjectId())
 	                    .append("url", url)
 	                    .append("crawled", "false")
 	                    .append("html", html)
+	                    .append("indexed", "false")
+	                   // .append("pageLinks",pageLinks)
 	                    );
 	            //System.out.println("Success! Inserted document" );
 	        } catch (MongoException me) {
@@ -66,10 +70,13 @@ public class MongoDB {
 	}
 	public void InsertUrl(String url) {
 		try {
+			//ArrayList<String> pageLinks = new ArrayList<>();
 	            this.CrawlerCollection.insertOne(new Document()
 	                    .append("_id", new ObjectId())
 	                    .append("url", url)
 	                    .append("crawled", "false")
+	                    .append("indexed", "false")
+	               //   .append("pageLinks",pageLinks)
 	                    );
 	            //System.out.println("Success! Inserted document" );
 	        } catch (MongoException me) {
@@ -90,9 +97,23 @@ public class MongoDB {
 	        }
 		
 	}
+
+public void appendToPagelinks(String url, String href) {
+		
+		
+		Document query = new Document().append("url",  url);
+		try {
+			
+			this.CrawlerCollection.updateOne(query, Updates.addToSet("pageLinks", href));
+	            //System.out.println("Success! updated document" );
+	        } catch (MongoException me) {
+	            System.err.println("Unable to update due to an error: " +me);
+	        }
+		
+	}
 public void setContent(String url ,String content) {
 		
-		Bson updates = Updates.combine(Updates.set("html", content));
+		Bson updates = Updates.combine(Updates.set("html", content),Updates.set("indexed", "false"));
 		Document query = new Document().append("url",  url);
 		try {
 			
@@ -103,16 +124,17 @@ public void setContent(String url ,String content) {
 	        }
 		
 	}
-public  ArrayList<String> getURL(String url) {
-	FindIterable <Document> iterable = this.CrawlerCollection.find(new org.bson.Document("url", url))
-			.projection(Projections.include("url"));
+public  List <Document> getURL(String url) {
+	FindIterable <Document> iterable = this.CrawlerCollection.find(new org.bson.Document("url", url));
+			//.projection(Projections.include("url"));
     List <Document> results = new ArrayList<>();
     iterable.into(results);
-    ArrayList<String> matchedUrls = new ArrayList<>();
-    for (int i=0 ; i<results.size(); i++) {
-    	matchedUrls.add(results.get(i).get("url").toString());
-    }
-    return matchedUrls;
+//   System.out.print(results);
+//    ArrayList<String> matchedUrls = new ArrayList<>();
+//    for (int i=0 ; i<results.size(); i++) {
+//    	matchedUrls.add(results.get(i).get("url").toString());
+//    }
+    return results;
 }
 public  ArrayList<String> getUrlId(String url) {
 	FindIterable <Document> iterable = this.CrawlerCollection.find(new org.bson.Document("url", url))
@@ -156,13 +178,37 @@ public  ArrayList<String> getUrlId(String url) {
 				
         
     }
-
+	public  void removeLink(String url) {
+		try {
+		this.relationshipsCollection.deleteMany(new org.bson.Document("url", url));
+		}catch(MongoException me) {
+            System.err.println("Unable to update due to an error: " +me);
+        }
+				
+        
+    }
+	public void InsertLink(String parentUrlId,String href) {
+		try {
+			
+	            this.relationshipsCollection.insertOne(new Document()
+	                    .append("_id", new ObjectId())
+	                    .append("href", href)
+	                    .append("parentUrlId", parentUrlId)
+	                    );
+	            //System.out.println("Success! Inserted document" );
+	        } catch (MongoException me) {
+	            System.err.println("Unable to insert due to an error: " +me);
+	        }
+		
+	}
 	public static void main(String[] args)  {
 		MongoDB database = new MongoDB("webCrawlerDB");
 		
 		//database.InsertUrl("url", "html");
+		//database.appendToPagelinks("https://www.geeksforgeeks.org/", "xxxxx");
 		//database.setCrawled("https://en.wikipedia.org/wiki/Main_Page");
 		//database.removeURL("https://edition.cnn.com//");
+		database.getURL("https://editi.cnn.com//");
 		//System.out.println(database.getCrawled().get(0));
 		//System.out.println(database.getUrlId("https://www.geeksforgeeks.org/"));
 

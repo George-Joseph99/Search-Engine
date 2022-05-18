@@ -18,7 +18,11 @@ public class Main {
 		seeds.add("https://edition.cnn.com/");
 		seeds.add("https://en.wikipedia.org/wiki/Main_Page");
 		seeds.add("https://cu.blackboard.com");
-       
+		seeds.add("https://www.coursera.org/");
+		seeds.add("https://www.javatpoint.com/");
+		seeds.add("https://www.amazon.eg/");
+		seeds.add("https://www.youm7.com");
+
 
         MongoDB database = new MongoDB("webCrawlerDB");
         

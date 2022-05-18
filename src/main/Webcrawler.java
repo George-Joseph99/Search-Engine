@@ -22,8 +22,8 @@ public class Webcrawler {
 	private String startUrl;
 	
 	MongoDB database;
-    private static final int MAX_TO_BE_CRAWLED = 500;
-    private static final int MAX_PER_PAGE = 50;
+    private static final int MAX_TO_BE_CRAWLED = 1000;
+    private static final int MAX_PER_PAGE =10;
 
     private ConcurrentHashMap <String, Boolean> isVisited;
     private ArrayBlockingQueue <String> toVisit;
@@ -76,7 +76,7 @@ public class Webcrawler {
 				
 				link = u.getProtocol()+ "://"+ u.getAuthority() + rmvFileFromPath(u.getPath())+link;
 			}
-			link = link.toLowerCase();
+			if (link!=null) link = link.toLowerCase();
 			return link;
 			
 		}
@@ -117,7 +117,7 @@ public class Webcrawler {
 		int toVisitSize=0;
 		synchronized(toVisit) {
 			toVisitSize=toVisit.size();
-			System.out.println(toVisitSize);
+			//System.out.println(toVisitSize);
 		}
 		while (toVisitSize!=0) {
 			if (toVisit.size()==0) return;
@@ -131,6 +131,7 @@ public class Webcrawler {
 			boolean isRobotAllowed = isRobotAllowed(robotFileContent,url);
 			if (!isRobotAllowed) {
 				database.removeURL(url);
+				database.removeLink(url);
 				System.out.println("-----------------ROBOT NOT ALLOWED------------------:");
 				continue;
 			}
@@ -143,8 +144,9 @@ public class Webcrawler {
 			
 			// now url is valid for crawling so get html 
 			String html= getHTML(url);
-			if (html=="") {
+			if (html.equals("")) {
 				database.removeURL(url);
+				database.removeLink(url);
 				continue;
 			}
 			Document doc = Jsoup.parse(html);
@@ -153,16 +155,22 @@ public class Webcrawler {
 			//synchronized(this.isVisited) {
 	        this.isVisited.put(url, true);
 	        //}
-			// insert page and its content in db
-			synchronized(this.database) {
+			// Insert page and its content in db
+			//synchronized(this.database) {
+	        
 			if(database.getURL(url).size()==0)
 				database.InsertUrl(url,html);
-			else 
+			else {// url exists in db
+				String prevHtml="";
+				Object htmlField = database.getURL(url).get(0).get("html");
+				if (htmlField!=null) prevHtml=htmlField.toString();
+				if (!prevHtml.equals(html))
 				database.setContent(url,html);
+			}
 			//ArrayList<String> urlId=database.getUrlId(url);
 			//this.savehtmlToFile(urlId.get(0)+".txt",doc);
 		    database.setCrawled(url);
-			}
+			//}
 			// get all links in this page
 			
 			Elements elements = doc.select("a");
@@ -173,18 +181,22 @@ public class Webcrawler {
 				 
 				 synchronized(toVisit) {
 						toVisitSize=toVisit.size();
-						System.out.println("toVisitSize "+toVisitSize);
+						//System.out.println("toVisitSize "+toVisitSize);
 					}
-				 System.out.println("visited size "+ isVisited.size()); 
+				 //System.out.println("visited size "+ isVisited.size()); 
 				if (toVisitSize+ isVisited.size()<=MAX_TO_BE_CRAWLED && counter <=MAX_PER_PAGE){ //TODO: Add visited size to condition
 					String href = e.attr("href");
 					href = normalizeLink(href,url);
-					//System.out.println(href);
 					if (href ==null) continue;
 					//TODO: add to database and toVisit array
 					synchronized(this.toVisit) {
 						 if(!this.toVisit.contains(href) && !this.isVisited.containsKey(href)) {
-							 synchronized(this.database) {	if(database.getURL(href).size()==0) database.InsertUrl(href);}
+							 //synchronized(this.database) {	
+								 if(database.getURL(href).size()==0) 
+									 database.InsertUrl(href);
+								 	 //database.appendToPagelinks(url, href);
+								 	database.InsertLink(database.getUrlId(url).get(0), href);
+								 //}
 							   this.toVisit.offer(href);
 							   counter++;
 						 }
@@ -230,7 +242,7 @@ public class Webcrawler {
             	robotFileContent += "\n";
             }
             in.close();
-            return robotFileContent==""? null: robotFileContent ;
+            return robotFileContent.equals("")? null: robotFileContent ;
 
         }
         catch (IOException e)//robots.txt not found
