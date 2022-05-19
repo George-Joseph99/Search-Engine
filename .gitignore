@@ -1,9 +1,9 @@
 .idea/
-lib/
+libs/
 out/
 test_assets/
 src/indexer/Test.java
-Server/
+Server/*
 jar/
 *.iml
 *.class

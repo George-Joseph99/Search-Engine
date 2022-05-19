@@ -11,19 +11,19 @@ public class PhraseMatcherThread implements Runnable{
     private int end_index;
     private List<RetrievedDocument> retrievedDocuments;
     private ConcurrentHashMap<String, Integer> isFoundMap;
-    private KMPStringMatching kmp;
+    private StringBruteforce sb;
 
-    public PhraseMatcherThread(int s, int e, List<RetrievedDocument> rd, ConcurrentHashMap<String, Integer> is_found, KMPStringMatching k) {
+    public PhraseMatcherThread(int s, int e, List<RetrievedDocument> rd, ConcurrentHashMap<String, Integer> is_found, StringBruteforce sb) {
         start_index = s;
         end_index = e;
         retrievedDocuments = rd;
         isFoundMap = is_found;
-        kmp = k;
+        this.sb = sb;
     }
     public void PhraseMatcherRun(RetrievedDocument document) {
         String str = document.title + " " + document.body;
         List<String> convertedStr = WordHelper.convertString(str);
-        if (kmp.KMPSearch(convertedStr)) {
+        if (sb.bruteforceMatch(convertedStr)) {
             isFoundMap.put(document.url, 1);
         }
     }
