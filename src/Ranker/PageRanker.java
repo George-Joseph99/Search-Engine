@@ -63,7 +63,7 @@ public class PageRanker {
                 for (URLRank urlRank : list) {
                     // sum the ranks of all children urls
                     newPageRank += urlRank.calculateRank();
-                    System.out.println("New page rank: " + newPageRank);
+                    //System.out.println("New page rank: " + newPageRank);
                 }
                 // page rank = (1-d) + d*(sum of page ranks of children urls)
                 newPageRank = newPageRank * dampingFactor + invDampingFactor;
