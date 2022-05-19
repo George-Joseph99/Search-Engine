@@ -8,26 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Indexer{
-    private final int THREAD_NUMBER = 10;
-    MongoDB dbManager;
-    public List<String> urls;
-    private List<Thread> threads = new ArrayList<Thread>();
-    public Indexer(MongoDB dbman) {
-        if (dbman == null) {
-            dbManager = new MongoDB(Constants.DATABASE_NAME);
-        } else {
-            dbManager = dbman;
-        }
-        urls = dbManager.getNonIndexedURLS();
-    }
-    public void runIndexer() {
+    private final static int THREAD_NUMBER = 10;
 
-        int LINKS_PER_THREAD = Double.valueOf(Math.ceil((double) this.urls.size()
-                / (double) this.THREAD_NUMBER)).intValue();
-        List<Integer> threadSegments = WordHelper.calculateLinkSegments(this.THREAD_NUMBER, this.urls.size());
-        //List<Integer> threadSegments = calculateLinkSegments(this.THREAD_NUMBER, 100);
-        //IndexerThread it = new IndexerThread(dbManager, 0, urls.size() - 1, urls);
-        //it.run();
+    public static void runIndexer(MongoDB dbman) {
+        MongoDB dbManager;
+            if (dbman == null) {
+                dbManager = new MongoDB(Constants.DATABASE_NAME);
+            } else {
+                dbManager = dbman;
+            }
+        List<String> urls = dbManager.getNonIndexedURLS();
+        List<Thread> threads = new ArrayList<Thread>();
+
+        int LINKS_PER_THREAD = Double.valueOf(Math.ceil((double) urls.size()
+                / (double) THREAD_NUMBER)).intValue();
+        List<Integer> threadSegments = WordHelper.calculateLinkSegments(THREAD_NUMBER, urls.size());
 
         int start_index = 0;
         int end_index = 0;
@@ -64,16 +59,18 @@ public class Indexer{
         //urls.clear();
         //threads.clear();
     }
+    public static void main(String[] args ) {
+        MongoDB dbManger = new MongoDB(Constants.DATABASE_NAME);
 
+        /* Indexer test */
+        dbManger.dropIndexCollections();
+        dbManger.resetCrawlerIndexed();
 
+        double startTime  = (double)System.nanoTime();
+        Indexer.runIndexer(dbManger);
+        double endTime  = (double)System.nanoTime();
 
-    /*
-    public void run() {
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        double totalTime = (endTime - startTime)* (1e-9);
+        System.out.println("indexer total time: " + totalTime);
     }
-     */
 }

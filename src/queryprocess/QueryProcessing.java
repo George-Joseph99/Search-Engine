@@ -38,7 +38,7 @@ public class QueryProcessing {
             int tf = Integer.parseInt(document.get("tf").toString());
             double score = Double.parseDouble(document.get("score").toString());
             int word_count = Integer.parseInt(document.get("word_count").toString());
-            double pageRank = (double) document.get("pageRank");
+            double pageRank = Double.parseDouble(document.get("pageRank").toString());
             int numofDocs = dbManager.countCrawledDocuments();
             int df = docFreqHash.get(url);
             double idf = Math.log((double) numofDocs / df);
