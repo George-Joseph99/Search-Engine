@@ -355,4 +355,20 @@ public class MongoDB {
 		return (int) this.CrawlerCollection.countDocuments(query);
 	}
 
+	public int getDocumentFrequency(String word) {
+		org.bson.conversions.Bson arg1 = match(Filters.eq("_id",word));
+		org.bson.conversions.Bson arg2 = unwind("$documents");
+		org.bson.conversions.Bson arg3 = project(
+				Projections.fields(
+						Projections.computed("url","$documents.url")
+				)
+		);
+		org.bson.conversions.Bson arg4 = count();
+
+		List<org.bson.conversions.Bson> aggrArg = Arrays.asList(arg1, arg2, arg3, arg4);
+		AggregateIterable<org.bson.Document> aggregateIterable = indexerCollection.aggregate(aggrArg);
+		if (aggregateIterable.first() == null) return 0;
+		return Integer.parseInt(aggregateIterable.first().getOrDefault("count",0).toString());
+	}
+
 }
