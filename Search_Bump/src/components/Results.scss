@@ -1,0 +1,222 @@
+$button: #9295f3;
+$back: #141b2d;
+$header: #141b2db9;
+
+.results-body {
+  background-size: cover;
+  background-color: $back !important;
+  color: aliceblue;
+  min-height: 100vh;
+  max-width: 100vw;
+  background-color: #48d4ff !important;
+}
+
+.result-header {
+  font-size: 60px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #48d4ff !important;
+  display: inline-block !important;
+}
+
+.search-section-res {
+  text-align: center;
+  width: 70%;
+  height: 60%;
+  color: aliceblue !important;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  float: left;
+  width: 200px;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  img {
+    width: 100px;
+  }
+  .logo {
+    width: 150px;
+  }
+}
+
+@media (max-width: 400px) {
+  #logo {
+    display: none;
+    width: 0;
+  }
+  .logo {
+    display: none;
+    width: 0;
+  }
+  #input {
+    max-width: 100%;
+  }
+  .search-section-res {
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+  }
+}
+
+.menu-icon {
+  float: right;
+}
+
+#input {
+  margin-left: -45px;
+  margin-right: -50px;
+  display: inline-block;
+  background-color: transparent !important;
+  //width: 50%;
+  height: 50px;
+  border-radius: 25px;
+  padding-left: 50px;
+  padding-right: 60px;
+  border: none;
+  overflow: hidden;
+  color: white !important;
+  transition: all 0.5s linear;
+  min-width: 250px;
+  border: 2px solid white;
+  box-shadow: 0 0 2px #fff;
+  text-overflow: clip;
+}
+
+#input:focus {
+  color: aliceblue !important;
+}
+
+.search-bar {
+  text-align: center;
+  background: transparent !important;
+  width: 70%;
+  height: 60%;
+  color: aliceblue !important;
+  width: 100% !important;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.search-button-2 {
+  color: #f03a73;
+  background-color: white;
+  height: 50px !important;
+  width: 50px !important;
+  min-width: 50px;
+  padding: 10px;
+  border-radius: 25px;
+  font-size: 20px;
+  line-height: 1.2;
+  outline: none;
+  border-color: white !important;
+  transition: all 0.3s linear;
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff;
+}
+
+.search-button-2:hover {
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+}
+
+.result-block {
+  padding-top: 72px;
+  padding-bottom: 85px;
+}
+
+#no-results {
+  padding-top: 100px;
+  padding-bottom: 85px;
+  margin-left: 13%;
+  margin-right: 13%;
+  width: 74%;
+}
+
+.hide {
+  padding: 0 !important;
+  height: 0 !important;
+  visibility: hidden;
+}
+
+.result-footer {
+  padding: 20px;
+  background-color: #48d4ff !important;
+}
+
+#pages {
+  display: flex;
+  justify-content: center;
+  .overflow-pages {
+    width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.previous:hover,
+.next:hover,
+.first:hover,
+.last:hover {
+  color: white;
+  border-top: 2px white solid !important;
+  text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 12px #fff, 0 0 30px $button, 0 0 50px $button;
+}
+
+.page {
+  border-top: 2px white solid !important;
+  padding-right: 3px;
+  padding-left: 3px;
+  width: 50px;
+  height: 40px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  transition: all 0.2s linear;
+}
+
+.page:hover {
+  color: #9295f3;
+  border-top: 2px #9295f3 solid !important;
+  transition: all 0.2s linear;
+}
+.disabled-button {
+  color: gray !important;
+}
+.disabled-button:hover {
+  text-shadow: none;
+  color: gray !important;
+  border-top: 2px white solid !important;
+}
+
+.page-color {
+  color: #9295f3;
+  font-weight: 700;
+  border-top: 2px #9295f3 solid !important;
+}
+
+#voice2 {
+  z-index: 1;
+  background-color: transparent;
+  border: none;
+  color: aliceblue;
+  font-size: 25px;
+  transition: all 0.3s linear;
+}
+#voice2:hover {
+  text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
+}
+.glow {
+  transition: all 0.3s linear !important;
+  animation: pulsate 1.2s infinite alternate;
+}
+
+#input::placeholder {
+  color: white;
+}

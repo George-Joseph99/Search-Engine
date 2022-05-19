@@ -1,0 +1,59 @@
+$highlighted: #9295f3;
+$hover: #686efa;
+
+.info {
+  padding-bottom: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  margin-left: 13%;
+  margin-right: 13%;
+  margin-top: 4px;
+  max-width: 100vw !important;
+  height: 120px;
+  transition: all 0.15s linear;
+}
+
+.info:hover {
+  box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff;
+  transition: all 0.15s linear;
+}
+.Title {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(240, 58, 115);
+  text-decoration: none;
+  transition: color 0.15s;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis !important;
+  overflow: hidden;
+}
+
+.Title:hover {
+  color: $hover;
+  /*text-decoration: underline;*/
+  transition: color 0.15s;
+}
+.url {
+  font-size: 15px;
+  color: rgb(121, 119, 121);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis !important;
+  overflow: hidden;
+}
+.url:hover {
+  color: rgb(1, 40, 70);
+}
+
+.preview {
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis !important;
+  overflow: hidden;
+}
