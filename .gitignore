@@ -2,6 +2,7 @@
 libs/
 out/
 test_assets/
+display/
 src/indexer/Test.java
 Server/*
 jar/
