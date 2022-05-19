@@ -22,7 +22,7 @@ public class Webcrawler {
 	private String startUrl;
 
 	MongoDB database;
-	private static final int MAX_TO_BE_CRAWLED = 1000;
+	private static final int MAX_TO_BE_CRAWLED = 5000;
 	private static final int MAX_PER_PAGE =10;
 
 	private ConcurrentHashMap <String, Boolean> isVisited;

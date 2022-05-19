@@ -74,11 +74,12 @@ public class PhraseMatcher {
     public static void main(String[] args) {
         MongoDB dbManger = new MongoDB(Constants.DATABASE_NAME);
 
-        String query = "play";
+        String query = "at the University of Oxford";
         QueryProcessing queryProcessing = new QueryProcessing(dbManger);
         List<RetrievedDocument> retrievedDocuments = queryProcessing.processTextQuery(query);
-        ResultDisplay.displayDocuments(retrievedDocuments, 0);
+
         List<RetrievedDocument> retrievedPhraseDocument = PhraseMatcher.matchPhrase(retrievedDocuments, query);
+        ResultDisplay.displayDocuments(retrievedPhraseDocument, 0);
         System.out.println();
     }
 }

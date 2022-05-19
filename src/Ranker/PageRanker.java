@@ -57,7 +57,7 @@ public class PageRanker {
                         //System.out.println("Counter: " + counter);
                     }
                     // add each url rank to the list
-                    list.add(new URLRank((double) current.get("PageRank"), counter));
+                    list.add(new URLRank((double) current.get("pageRank"), counter));
                 }
                 double newPageRank = 0;
                 for (URLRank urlRank : list) {
@@ -80,7 +80,7 @@ public class PageRanker {
     }
 
     public static void main(String[] args) throws IOException {
-        String uri ="mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/webCrawlerDB?retryWrites=true&w=majority";
+        String uri = "mongodb://localhost:27017";
         ConnectionString connectionString = new ConnectionString(uri);
 
         MongoClientSettings settings = MongoClientSettings.builder()

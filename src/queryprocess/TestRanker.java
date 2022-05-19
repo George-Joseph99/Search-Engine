@@ -8,7 +8,7 @@ public class TestRanker {
         MongoDB dbManager = new MongoDB(Constants.DATABASE_NAME);
         List<RetrievedDocument> docs;
         QueryProcessing qp = new QueryProcessing(dbManager);
-        String query = "play";
+        String query = "java";
         docs = qp.processTextQuery(query);
         //System.out.println("doc list size: " + docs.size());
         //ResultDisplay.displayDocuments(docs, 1.0);
