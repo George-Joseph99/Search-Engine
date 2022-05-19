@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class queryProcessing {
+public class QueryProcessing {
     MongoDB dbManager;
-    public queryProcessing(MongoDB dbman) {
+    public QueryProcessing(MongoDB dbman) {
         dbManager = dbman;
     }
 

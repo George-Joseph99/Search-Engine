@@ -150,7 +150,12 @@ public class Webcrawler {
 				continue;
 			}
 			Document doc = Jsoup.parse(html);
-
+			//skip this url if its content already exists in db
+			if (database.getHtml(html).size()!=0) {
+				database.removeURL(url);
+				database.removeLink(url);
+				continue;
+			}
 			// add to visited list
 			//synchronized(this.isVisited) {
 			this.isVisited.put(url, true);
@@ -194,7 +199,6 @@ public class Webcrawler {
 							//synchronized(this.database) {
 							if(database.getURL(href).size()==0)
 								database.InsertUrl(href);
-							//database.appendToPagelinks(url, href);
 							database.InsertLink(database.getUrlId(url).get(0), href);
 							//}
 							this.toVisit.offer(href);
@@ -360,3 +364,4 @@ class webCrawlerRunnable implements Runnable {
 
 	}
 }
+
