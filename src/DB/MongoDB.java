@@ -37,7 +37,8 @@ public class MongoDB {
 	public MongoDB(String DBname) {
 
 		try {
-			String uri ="mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+			String uri = "mongodb://localhost:27017";
+			//String uri ="mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 			ConnectionString connectionString = new ConnectionString(uri);
 
 			MongoClientSettings settings = MongoClientSettings.builder()
@@ -51,7 +52,6 @@ public class MongoDB {
 			indexerCollection = database.getCollection("IndexerCollection");
 			documentCollection = database.getCollection("DocumentCollection");
 			System.out.println("Connected to DB");
-
 
 		}catch(Exception e) {
 			System.out.println("Error connecting to DB");
@@ -149,6 +149,20 @@ public class MongoDB {
 //    }
 		return results;
 	}
+	public  List <Document> getLink(String url) {
+		FindIterable <Document> iterable = this.relationshipsCollection.find(new org.bson.Document("url", url));
+		List <Document> results = new ArrayList<>();
+		iterable.into(results);
+
+		return results;
+	}
+	public  List <Document> getHtml(String html) {
+		FindIterable <Document> iterable = this.relationshipsCollection.find(new org.bson.Document("html", html));
+		List <Document> results = new ArrayList<>();
+		iterable.into(results);
+
+		return results;
+	}
 	public  ArrayList<String> getUrlId(String url) {
 		FindIterable <Document> iterable = this.CrawlerCollection.find(new org.bson.Document("url", url))
 				.projection(Projections.include("url"));
@@ -193,7 +207,7 @@ public class MongoDB {
 	}
 	public  void removeLink(String url) {
 		try {
-			this.relationshipsCollection.deleteMany(new org.bson.Document("url", url));
+			this.relationshipsCollection.deleteMany(new org.bson.Document("href", url));
 		}catch(MongoException me) {
 			System.err.println("Unable to update due to an error: " +me);
 		}
@@ -353,6 +367,22 @@ public class MongoDB {
 	public int countCrawledDocuments() {
 		org.bson.conversions.Bson query = Filters.eq("indexed", "true");
 		return (int) this.CrawlerCollection.countDocuments(query);
+	}
+
+	public int getDocumentFrequency(String word) {
+		org.bson.conversions.Bson arg1 = match(Filters.eq("_id",word));
+		org.bson.conversions.Bson arg2 = unwind("$documents");
+		org.bson.conversions.Bson arg3 = project(
+				Projections.fields(
+						Projections.computed("url","$documents.url")
+				)
+		);
+		org.bson.conversions.Bson arg4 = count();
+
+		List<org.bson.conversions.Bson> aggrArg = Arrays.asList(arg1, arg2, arg3, arg4);
+		AggregateIterable<org.bson.Document> aggregateIterable = indexerCollection.aggregate(aggrArg);
+		if (aggregateIterable.first() == null) return 0;
+		return Integer.parseInt(aggregateIterable.first().getOrDefault("count",0).toString());
 	}
 
 }

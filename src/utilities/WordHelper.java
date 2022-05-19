@@ -23,7 +23,7 @@ public class WordHelper {
         }
         return stopWords;
     }
-    public static List<String> prepareString (String str) {
+    public static List<String> convertString (String str) {
         str = str.replaceAll("[^a-zA-Z0-9]", " ");
         str = str.toLowerCase();
         String [] wordsTemp = str.split("\\s+");
@@ -49,5 +49,29 @@ public class WordHelper {
             }
         }
         return words;
+    }
+
+    public static List<Integer> calculateLinkSegments (int thread_number, int total_number) {
+        int docs_per_thread = Double.valueOf(Math.ceil((double) total_number
+                / (double) thread_number)).intValue();
+
+        List<Integer> list = new ArrayList<Integer>();
+        int current_number = total_number;
+
+        while(current_number > 0) {
+            if (current_number > docs_per_thread) {
+                list.add(docs_per_thread);
+                current_number -= docs_per_thread;
+            }
+            else {
+                list.add(current_number);
+                current_number = 0;
+            }
+        }
+
+        while (thread_number > list.size()) {
+            list.add(-1);
+        }
+        return list;
     }
 }

@@ -1,6 +1,8 @@
 package indexer;
 
 import DB.MongoDB;
+import queryprocess.QueryProcessing;
+import queryprocess.RetrievedDocument;
 import utilities.Constants;
 
 import java.io.IOException;
@@ -10,10 +12,22 @@ import java.util.List;
 
 public class Test {
     public static void main(String [] args) throws IOException, InterruptedException {
-
+        String str = "";
+        String [] st = str.split("\\s+");
         MongoDB dbManger = new MongoDB(Constants.DATABASE_NAME);
-        Indexer indexer = new Indexer(dbManger);
-        indexer.runIndexer();
+        //dbManger.dropIndexCollections();
+        //dbManger.resetCrawlerIndexed();
+        //double startTime  = (double)System.nanoTime();
+        //Indexer indexer = new Indexer(dbManger);
+        //indexer.runIndexer();
+        //double endTime  = (double)System.nanoTime();
+        //double totalTime = (endTime - startTime)* (1e-9);
+        //System.out.println(totalTime);
+        //QueryProcessing queryProcessing = new QueryProcessing(dbManger);
+        //List<RetrievedDocument> retrievedDocuments = queryProcessing.processTextQuery("secur");
+
+        //System.out.println();
+
 
 
         //DBMan.startConnection("test");

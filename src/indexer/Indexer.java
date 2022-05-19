@@ -2,12 +2,13 @@ package indexer;
 
 import DB.MongoDB;
 import utilities.Constants;
+import utilities.WordHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Indexer{
-    private final int THREAD_NUMBER = 4;
+    private final int THREAD_NUMBER = 10;
     MongoDB dbManager;
     public List<String> urls;
     private List<Thread> threads = new ArrayList<Thread>();
@@ -23,8 +24,9 @@ public class Indexer{
 
         int LINKS_PER_THREAD = Double.valueOf(Math.ceil((double) this.urls.size()
                 / (double) this.THREAD_NUMBER)).intValue();
-        List<Integer> threadSegments = calculateLinkSegments(this.THREAD_NUMBER, this.urls.size());
-        //IndexerThread it = new IndexerThread(dbManager, 0, 4, urls);
+        List<Integer> threadSegments = WordHelper.calculateLinkSegments(this.THREAD_NUMBER, this.urls.size());
+        //List<Integer> threadSegments = calculateLinkSegments(this.THREAD_NUMBER, 100);
+        //IndexerThread it = new IndexerThread(dbManager, 0, urls.size() - 1, urls);
         //it.run();
 
         int start_index = 0;
@@ -63,29 +65,7 @@ public class Indexer{
         //threads.clear();
     }
 
-    private static List<Integer> calculateLinkSegments (int thread_number, int total_number) {
-        int docs_per_thread = Double.valueOf(Math.ceil((double) total_number
-                / (double) thread_number)).intValue();
 
-        List<Integer> list = new ArrayList<Integer>();
-        int current_number = total_number;
-
-        while(current_number > 0) {
-            if (current_number > docs_per_thread) {
-                list.add(docs_per_thread);
-                current_number -= docs_per_thread;
-            }
-            else {
-                list.add(current_number);
-                current_number = 0;
-            }
-        }
-
-        while (thread_number > list.size()) {
-            list.add(-1);
-        }
-        return list;
-    }
 
     /*
     public void run() {
