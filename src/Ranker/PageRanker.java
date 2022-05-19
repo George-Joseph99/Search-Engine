@@ -25,7 +25,7 @@ public class PageRanker {
         BasicDBObject resetQuery = new BasicDBObject();
         BasicDBObject resetDocument = new BasicDBObject();
         BasicDBObject resetObject = new BasicDBObject();
-        resetDocument.put("PageRank", initialPageRank); //initialize PageRank to 1/N
+        resetDocument.put("pageRank", initialPageRank); //initialize PageRank to 1/N
         resetObject.put("$set", resetDocument);
         linksCollection.updateMany(resetQuery, resetObject);
         for (int i = 0; i < numIterations; i++) {
@@ -71,7 +71,7 @@ public class PageRanker {
                 BasicDBObject query = new BasicDBObject();
                 query.put("_id", id);
                 BasicDBObject document = new BasicDBObject();
-                document.put("PageRank", newPageRank);
+                document.put("pageRank", newPageRank);
                 BasicDBObject updateObject = new BasicDBObject();
                 updateObject.put("$set", document);
                 linksCollection.updateOne(query, updateObject);
