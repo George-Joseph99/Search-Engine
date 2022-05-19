@@ -61,21 +61,6 @@ $button: white;
     width: 200px !important;
   }
 
-  // .search-button {
-  //   width: 60px !important;
-  //   height: 60px !important;
-  //   font-size: 30px !important;
-  // }
-
-  // #home-input {
-  //   height: 30px !important;
-  //   font-size: 10px;
-  //   margin-left: -30px !important;
-  //   padding-left: 30px !important;
-  // }
-  // #voice {
-  //   font-size: 15px !important;
-  // }
 }
 .search-section {
   text-align: center;
@@ -164,12 +149,4 @@ $button: white;
   }
 }
 
-//idea from https://css-tricks.com/how-to-create-neon-text-with-css/
-@keyframes pulsate {
-  0% {
-    text-shadow: 0 0 4px black, 0 0 11px #fff, 0 0 40px magenta, 0 0 50px $button, 0 0 60px $button, 0 0 70px cyan;
-  }
-  100% {
-    text-shadow: 0 0 1px black, 0 0 3px #fff, 0 0 12px white, 0 0 20px $button, 0 0 30px $button, 0 0 40px $button, 0 0 55px $button, 0 0 70px $button;
-  }
-}
+

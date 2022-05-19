@@ -14,6 +14,7 @@ import {results} from "../helpers/tempInitialStateResults.js"
 
 const Results = () => {
   let history = useHistory();
+  //Commented for the hard-code(Search results)
   //const [results, setResults] = useState([]);
 
   const [loadingResults, setLoadingResults] = useState(false);
@@ -26,6 +27,7 @@ const Results = () => {
   const [searchFocused, setSearchFocused] = useState(false);
   const [showSuggestionsAfterDeletion, setShowSuggestionsAfterDeletion] = useState(false);
 
+  //Function to return back to Home page
   const goToHome = () => {
     history.push(`/`);
   };
@@ -38,7 +40,7 @@ const Results = () => {
     speechRecognitionProperties: { interimResults: true },
   });
 
-  //update the search input value when voice recording is used
+  //update the search input value when voice recording is used(word by word)
   useEffect(() => {
     console.log(interimResult);
     if (isRecording && interimResult) {
@@ -72,7 +74,8 @@ const Results = () => {
     })
       .then((resultsFromSearch) => {
         console.log(resultsFromSearch);
-        // saveSearchState(theCurrentQueryString, resultsFromSearch);
+        //Commented for the hard-code(Search results)
+        //saveSearchState(theCurrentQueryString, resultsFromSearch);
         //setResults(resultsFromSearch.results);
         setTotalResultsFound(resultsFromSearch.totalResultsFound);
       })
@@ -85,10 +88,10 @@ const Results = () => {
   //To get the history of all users as suggestions
   const handleInputChange = async (e) => {
     e.preventDefault();
-    // setSearchInput(e.target.value);
     setQueryString(e.target.value);
   };
 
+  //To get the history of all users as suggestions
   useEffect(async () => {
     if (queryString.trim() !== "") {
       setLoadingSuggestions(true);
@@ -155,7 +158,6 @@ const Results = () => {
 
   //when clicking on the search button
   const search = () => {
-    //e.preventDefault();
     if (queryString !== "") {
       addToSearchHistory(queryString);
       history.push(`/Results?q=${encodeURIComponent(queryString)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
@@ -177,6 +179,7 @@ const Results = () => {
     setSearchFocused(showSuggestionsAfterDeletion && true);
   }, [showSuggestionsAfterDeletion]);
 
+  //this var was changed to false for the hard-coded part (Search results)
   //var noResults = totalResultsFound === 0;
   var noResults = false;
   return (
@@ -208,7 +211,7 @@ const Results = () => {
                   suggestions={suggestions}
                   searchInput={queryString}
                   color="#1f2940"
-                  styles="suggestion-item-res"
+                  styles="suggestion-item !important"
                   marg="-10px"
                   width="92%"
                   onDeleteFromHistory={updateDeletedSearchHistory}

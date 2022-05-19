@@ -10,6 +10,7 @@ import useOuterClick from "../helpers/useOuterClick";
 
 const Home = () => {
   let history = useHistory();
+  //Usestate functions to set some used values and giving them initial values
   const [suggestions, setSuggestions] = useState(getSearchHistory());
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -24,7 +25,7 @@ const Home = () => {
     speechRecognitionProperties: { interimResults: true },
   });
 
-  //update the search input value when voice recording is used
+  //update the search input value when voice recording is used(Word by word)
   useEffect(() => {
     console.log(interimResult);
     if (isRecording && interimResult) {
@@ -41,16 +42,18 @@ const Home = () => {
     }
   }, [isRecording]);
 
-  //when clicking on the search button
+  //SEARCHING when CLICKING on the SEARCH BUTTON
+  //addToSearchHistory FROM helpers/userSearchHistory
   const search = () => {
     //e.preventDefault();
-    if (searchInput !== "") {
+    if (searchInput !== "") { 
       addToSearchHistory(searchInput);
       history.push(`/Results?q=${encodeURIComponent(searchInput)}&page=1&limit=${+process.env.REACT_APP_RESULTS_PER_PAGE}`);
     }
   };
 
-  //when pressing enter in the search field
+  //SEARCHING when PRESSING ENTER in the search field
+  //addToSearchHistory FROM helpers/userSearchHistory
   const searchEnter = (e) => {
     if (e.keyCode === 13) {
       if (searchInput !== "") {
@@ -80,14 +83,18 @@ const Home = () => {
     }
   };
 
+  //Set the search not waiting for input
   const insideSuggestions = useOuterClick((ev) => {
     setSearchFocused(false);
   });
 
+  //Update the search history after a deletion
   const updateDeletedSearchHistory = (newSearchHistory) => {
     setSuggestions(newSearchHistory);
     setShowSuggestionsAfterDeletion(true);
   };
+
+  //Makes the search focused and ready after a deletion (always running)
   useEffect(() => {
     setSearchFocused(showSuggestionsAfterDeletion && true);
   }, [showSuggestionsAfterDeletion]);
@@ -105,9 +112,7 @@ const Home = () => {
             placeholder="Type Here..."
             onKeyDown={searchEnter}
             onChange={handleInputChange}
-            //value={interimResult}
             autoComplete="off"
-            //style={{ width: "100%" }}
             onFocus={() => setSearchFocused(true)}
           ></input>
           <button className="fas fa-search search-button" onClick={search} style={{ zIndex: 200 }}></button>
