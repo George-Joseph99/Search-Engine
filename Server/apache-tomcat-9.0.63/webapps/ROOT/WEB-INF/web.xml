@@ -27,4 +27,17 @@
      Welcome to Tomcat
   </description>
 
+    <servlet>
+        <servlet-name>Name</servlet-name>
+        <servlet-class>Interface</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>Name</servlet-name>
+        <url-pattern>/Interface</url-pattern>
+    </servlet-mapping>
+
+
+
 </web-app>
