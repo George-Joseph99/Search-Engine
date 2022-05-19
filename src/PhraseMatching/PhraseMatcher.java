@@ -1,7 +1,10 @@
 package PhraseMatching;
 
+import DB.MongoDB;
 import indexer.IndexerThread;
+import queryprocess.QueryProcessing;
 import queryprocess.RetrievedDocument;
+import utilities.Constants;
 import utilities.WordHelper;
 
 import java.util.ArrayList;
@@ -15,9 +18,9 @@ public class PhraseMatcher {
                                                       String query)
     {
         ConcurrentHashMap<String, Integer> isFoundMap = new ConcurrentHashMap<>();
-        List<String> convertedQuery = WordHelper.processString(query);
+        List<String> convertedQuery = WordHelper.convertString(query);
         List<RetrievedDocument> resultDocuments = new ArrayList<RetrievedDocument>();
-        KMPStringMatching kmp = new KMPStringMatching(convertedQuery);
+        StringBruteforce sb = new StringBruteforce(convertedQuery);
         List<Thread> threads = new ArrayList<Thread>();
 
         int DOC_PER_THREAD = Double.valueOf(Math.ceil((double) retrievedDocuments.size()
@@ -36,14 +39,16 @@ public class PhraseMatcher {
                 end_index += threadSegments.get(i);
             }
 
+
+
             //do threads
             Thread thread;
             if (threadSegments.get(i) > 0)
                 thread = new Thread(new PhraseMatcherThread(start_index,
-                        end_index,retrievedDocuments, isFoundMap, kmp ));
+                        end_index,retrievedDocuments, isFoundMap, sb));
             else
                 thread = new Thread(new PhraseMatcherThread(-1, -1,
-                        retrievedDocuments, isFoundMap, kmp ));
+                        retrievedDocuments, isFoundMap, sb));
             thread.start();
             threads.add(thread);
 
@@ -56,7 +61,6 @@ public class PhraseMatcher {
                 e.printStackTrace();
             }
         }
-
         for (RetrievedDocument document : retrievedDocuments) {
             if (isFoundMap.get(document.url) != null) {
                 resultDocuments.add(document);
@@ -64,5 +68,15 @@ public class PhraseMatcher {
         }
 
         return resultDocuments;
+    }
+
+    public static void main(String[] args) {
+        MongoDB dbManger = new MongoDB(Constants.DATABASE_NAME);
+
+        String query = "Terms and Conditions of Use - Spotify Skip to content Spotify";
+        QueryProcessing queryProcessing = new QueryProcessing(dbManger);
+        List<RetrievedDocument> retrievedDocuments = queryProcessing.processTextQuery(query);
+        List<RetrievedDocument> retrievedPhraseDocument = PhraseMatcher.matchPhrase(retrievedDocuments, query);
+        System.out.println();
     }
 }

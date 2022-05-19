@@ -19,7 +19,7 @@ public class PageRanker {
     public static void calculatePageRank(MongoDatabase db) throws IOException {
         MongoCollection<Document> linksCollection = db.getCollection(LINKS_COLLECTION_NAME);
         MongoCollection<Document> hrefsCollection = db.getCollection(HREFS_COLLECTION_NAME);
-        long noOfLinks = linksCollection.count();
+        long noOfLinks = linksCollection.countDocuments();
         System.out.println("Number of links: " + noOfLinks);
         double initialPageRank = 1.0 / noOfLinks;
         BasicDBObject resetQuery = new BasicDBObject();

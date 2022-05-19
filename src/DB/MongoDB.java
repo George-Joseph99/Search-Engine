@@ -73,6 +73,7 @@ public class MongoDB {
 							.append("crawled", "false")
 							.append("html", html)
 							.append("indexed", "false")
+							.append("pageRank", (double) 0.0)
 					// .append("pageLinks",pageLinks)
 			);
 			//System.out.println("Success! Inserted document" );
@@ -89,6 +90,7 @@ public class MongoDB {
 							.append("url", url)
 							.append("crawled", "false")
 							.append("indexed", "false")
+							.append("pageRank", (float) 0.0)
 					//   .append("pageLinks",pageLinks)
 			);
 			//System.out.println("Success! Inserted document" );
@@ -356,10 +358,19 @@ public class MongoDB {
 						Projections.computed("word_count", "$requested_docs.word_count")
 				)
 		);
+		org.bson.conversions.Bson arg31 = lookup("CrawlerCollection", "url", "url", "pageranked_docs");
+		org.bson.conversions.Bson arg32 = unwind("$pageranked_docs");
+		org.bson.conversions.Bson arg33 = project(
+				Projections.fields(
+						Projections.include("url", "score", "tf", "title", "body", "word_count"),
+						Projections.computed("pageRank", "$pageranked_docs.pageRank")
+				)
+		);
 
 		List<org.bson.conversions.Bson> aggrArg = Arrays.asList(
 				arg11, arg12, arg13,
-				arg21, arg22, arg23
+				arg21, arg22, arg23,
+				arg31, arg32, arg33
 		);
 		return this.indexerCollection.aggregate(aggrArg);
 	}
