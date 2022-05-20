@@ -1,9 +1,9 @@
 package queryprocess;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 @SuppressWarnings("all")
 public class RelevanceRanker {
-    public void CalculateRelevance(ArrayList<RetrievedDocument> docList, String query) {
+    public void CalculateRelevance(List<RetrievedDocument> docList) {
         for (RetrievedDocument doc : docList) {
             doc.calculateTotalRank();
         }

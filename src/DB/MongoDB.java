@@ -159,7 +159,7 @@ public class MongoDB {
 		return results;
 	}
 	public  List <Document> getHtml(String html) {
-		FindIterable <Document> iterable = this.relationshipsCollection.find(new org.bson.Document("html", html));
+		FindIterable <Document> iterable = this.CrawlerCollection.find(new org.bson.Document("html", html));
 		List <Document> results = new ArrayList<>();
 		iterable.into(results);
 

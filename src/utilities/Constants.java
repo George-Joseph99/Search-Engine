@@ -3,10 +3,17 @@ package utilities;
 import java.util.HashMap;
 
 public class Constants {
+    ///////////////////// INDEXER /////////////////////
     private static boolean is_initialized = false;
-
     public static final String DATABASE_NAME = "webCrawlerDB";
     public static HashMap<String, Integer> indexerWeight = new HashMap<String, Integer>();
+
+    ///////////////////// DISPLAY RESULT /////////////////////
+    public static String [] NUMBER_TO_INDEX = {
+            "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth"
+    };
+    public static final String HTML_FILENAME = "./display/index.html";
+
     public static void initialize() {
         if (is_initialized) return;
         indexerWeight.put("title", 70);

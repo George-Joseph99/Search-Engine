@@ -25,7 +25,7 @@ public class PageRanker {
         BasicDBObject resetQuery = new BasicDBObject();
         BasicDBObject resetDocument = new BasicDBObject();
         BasicDBObject resetObject = new BasicDBObject();
-        resetDocument.put("PageRank", initialPageRank); //initialize PageRank to 1/N
+        resetDocument.put("pageRank", initialPageRank); //initialize PageRank to 1/N
         resetObject.put("$set", resetDocument);
         linksCollection.updateMany(resetQuery, resetObject);
         for (int i = 0; i < numIterations; i++) {
@@ -57,13 +57,13 @@ public class PageRanker {
                         //System.out.println("Counter: " + counter);
                     }
                     // add each url rank to the list
-                    list.add(new URLRank((double) current.get("PageRank"), counter));
+                    list.add(new URLRank((double) current.get("pageRank"), counter));
                 }
                 double newPageRank = 0;
                 for (URLRank urlRank : list) {
                     // sum the ranks of all children urls
                     newPageRank += urlRank.calculateRank();
-                    System.out.println("New page rank: " + newPageRank);
+                    //System.out.println("New page rank: " + newPageRank);
                 }
                 // page rank = (1-d) + d*(sum of page ranks of children urls)
                 newPageRank = newPageRank * dampingFactor + invDampingFactor;
@@ -71,7 +71,7 @@ public class PageRanker {
                 BasicDBObject query = new BasicDBObject();
                 query.put("_id", id);
                 BasicDBObject document = new BasicDBObject();
-                document.put("PageRank", newPageRank);
+                document.put("pageRank", newPageRank);
                 BasicDBObject updateObject = new BasicDBObject();
                 updateObject.put("$set", document);
                 linksCollection.updateOne(query, updateObject);
@@ -80,7 +80,7 @@ public class PageRanker {
     }
 
     public static void main(String[] args) throws IOException {
-        String uri ="mongodb+srv://nouran:Nouran12345.@cluster0.mg1bc.mongodb.net/webCrawlerDB?retryWrites=true&w=majority";
+        String uri = "mongodb://localhost:27017";
         ConnectionString connectionString = new ConnectionString(uri);
 
         MongoClientSettings settings = MongoClientSettings.builder()

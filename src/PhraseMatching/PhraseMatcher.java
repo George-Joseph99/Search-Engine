@@ -1,6 +1,7 @@
 package PhraseMatching;
 
 import DB.MongoDB;
+import frontend.ResultDisplay;
 import indexer.IndexerThread;
 import queryprocess.QueryProcessing;
 import queryprocess.RetrievedDocument;
@@ -73,10 +74,12 @@ public class PhraseMatcher {
     public static void main(String[] args) {
         MongoDB dbManger = new MongoDB(Constants.DATABASE_NAME);
 
-        String query = "Terms and Conditions of Use - Spotify Skip to content Spotify";
+        String query = "at the University of Oxford";
         QueryProcessing queryProcessing = new QueryProcessing(dbManger);
         List<RetrievedDocument> retrievedDocuments = queryProcessing.processTextQuery(query);
+
         List<RetrievedDocument> retrievedPhraseDocument = PhraseMatcher.matchPhrase(retrievedDocuments, query);
+        ResultDisplay.displayDocuments(retrievedPhraseDocument, 0);
         System.out.println();
     }
 }
